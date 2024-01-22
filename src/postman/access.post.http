@@ -1,0 +1,11 @@
+@url-dev=http://localhost:3033/v1/api/
+
+POST {{url-dev}}/shop/signup
+Content-Type: application/json
+x-api-key: eade58340cafea45af15f7a0f2932c91fd45260a0d235247045055aac0d5f355353c55db3edb9340c63e02db6339dea7f58bda719152259b8e1978ca41b3caf8
+
+{
+    "name": "Shop tips",
+    "email": "thanhpd09@ows.com.vn",
+    "password": "abc123"
+}
