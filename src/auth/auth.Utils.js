@@ -92,6 +92,7 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
     // 2
     const keysStore = await findByUseId(userId)
     if (!keysStore) throw new NotFoundError('not found key store')
+    console.log("figbug111")
 
     // 3
     if (req.headers[HEADER.REFRESHTOKEN]) {
@@ -109,6 +110,21 @@ const authenticationV2 = asyncHandler(async (req, res, next) => {
         } catch (error) {
             throw error
         }
+    }
+
+    const accessToken = req.headers[HEADER.AUTHORIZATION]
+    if (!accessToken) throw new AuthFailureError('invalid request')
+
+    try {
+        const decodeUser = JWT.verify(accessToken, keysStore.publicKey)
+        if (userId !== decodeUser.userId) throw new AuthFailureError('invalid user')
+        console.log(decodeUser, "key store")
+
+        req.keysStore = keysStore
+        req.user = decodeUser
+        return next()
+    } catch (error) {
+        throw error
     }
 })
 const verifyJWT = async (token, keSecret) => {

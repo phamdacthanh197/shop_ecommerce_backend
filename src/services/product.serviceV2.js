@@ -2,7 +2,7 @@
 
 const { BadRquestError } = require('../core/error.response')
 const { product, clothing, electronic, furniture } = require('../models/product.model')
-
+const { findAllDraftsForShop, pusblicProductShop, findAllPublishForShop, unPusblicProductShop, searchProduct } = require('../models/repositories/product.repo')
 //  define factory class to create product
 
 class ProductFactory {
@@ -12,17 +12,44 @@ class ProductFactory {
      * playload
      */
 
+    static registryProductKey = {}
+
+    static registryProductType(key, classRef) {
+        ProductFactory.registryProductKey[key] = classRef
+    }
+
+    //post
     static async createProduct(type, playload) {
-        switch (type) {
-            case "Electronic":
-                return new Electronic(playload).createProduct()
-            case "Clothing":
-                return new Clothing(playload).createProduct()
-            case "Furniture":
-                return new Furniture(playload).createProduct()
-            default:
-                throw new BadRquestError(`invalid product type ${type}`)
-        }
+        const productClass = ProductFactory.registryProductKey[type]
+        if (!productClass) throw new BadRquestError(`Invalid product type ${type}`)
+
+        return new productClass(playload).createProduct()
+    }
+    // get publish for shop 
+    static async findAllPublishForShop({ product_shop, limit = 50, skip = 0 }) {
+        const query = { product_shop, isPublished: true }
+
+        return await findAllPublishForShop({ query, limit, skip })
+    }
+
+    // get draft for shop
+    static async findAllDraftsForShop({ product_shop, limit = 50, skip = 0 }) {
+        const query = { product_shop, isDraft: true }
+
+        return await findAllPublishForShop({ query, limit, skip })
+    }
+
+    // put 
+    static async pusblicProductShop({ product_shop, product_id }) {
+        return await pusblicProductShop({ product_shop, product_id })
+    }
+
+    static async unPusblicProductShop({ product_shop, product_id }) {
+        return await unPusblicProductShop({ product_shop, product_id })
+    }
+
+    static async searchProduct({ keySearch }) {
+        return await searchProduct({ keySearch })
     }
 }
 
@@ -59,10 +86,13 @@ class Product {
 
 class Clothing extends Product {
     async createProduct() {
-        const newColting = await clothing.create(this.product_attribute)
+        const newColting = await clothing.create({
+            ...this.product_attribute,
+            product_shop: this.product_shop
+        })
         if (!newColting) throw new BadRquestError(' create colting error')
 
-        const newProduct = await super.createProduct()
+        const newProduct = await super.createProduct(newColting._id)
         if (!newProduct) throw new BadRquestError(' create product error')
 
         return newProduct
@@ -83,6 +113,7 @@ class Electronic extends Product {
         return newProduct
     }
 }
+
 class Furniture extends Product {
     async createProduct() {
         const newFurniture = await furniture.create({
@@ -97,5 +128,9 @@ class Furniture extends Product {
         return newProduct
     }
 }
+
+ProductFactory.registryProductType("Furniture", Furniture)
+ProductFactory.registryProductType("Clothing", Clothing)
+ProductFactory.registryProductType("Elictronic", Electronic)
 
 module.exports = ProductFactory

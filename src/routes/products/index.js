@@ -3,11 +3,19 @@
 const express = require("express")
 const  ProductController = require("../../controllers/product.controller")
 const { asyncHandler } = require("../../helpers/asyncHandler")
-const { authentication } = require("../../auth/auth.Utils")
+const { authentication, authenticationV2 } = require("../../auth/auth.Utils")
 const router = express.Router()
 
-//authentication q
-router.use(authentication)
+router.get('/products/search/:keySearch', asyncHandler(ProductController.searchProduct))
+
+//authentication 
+router.use(authenticationV2)
 router.post('/products', asyncHandler(ProductController.createProduct))
+router.put('/products/publish/:id', asyncHandler(ProductController.pusblicProductShop))
+router.put('/products/unpublish/:id', asyncHandler(ProductController.unPusblicProductShop))
+
+// query 
+router.get('/products/draft/all', asyncHandler(ProductController.getListDraftProduct))
+router.get('/products/published/all', asyncHandler(ProductController.findAllPublishForShop))
 
 module.exports = router

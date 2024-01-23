@@ -9,7 +9,7 @@ router.use(apiKey)
 // check permisson
 router.use(permisson("0000"))
 
+router.use("/v1/api", require("./products")) 
 router.use("/v1/api", require("./access"))
-router.use("/v1/api", require("./products"))
 
 module.exports = router
