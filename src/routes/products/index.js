@@ -7,6 +7,9 @@ const { authentication, authenticationV2 } = require("../../auth/auth.Utils")
 const router = express.Router()
 
 router.get('/products/search/:keySearch', asyncHandler(ProductController.searchProduct))
+router.get('/products', asyncHandler(ProductController.findAllProducts))
+router.get('/products/:id', asyncHandler(ProductController.findProduct))
+
 
 //authentication 
 router.use(authenticationV2)
@@ -18,4 +21,4 @@ router.put('/products/unpublish/:id', asyncHandler(ProductController.unPusblicPr
 router.get('/products/draft/all', asyncHandler(ProductController.getListDraftProduct))
 router.get('/products/published/all', asyncHandler(ProductController.findAllPublishForShop))
 
-module.exports = router
+module.exports = router 
