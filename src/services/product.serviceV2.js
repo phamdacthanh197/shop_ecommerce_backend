@@ -1,8 +1,10 @@
 'use strict'
 
+const { model } = require('mongoose')
 const { BadRquestError } = require('../core/error.response')
 const { product, clothing, electronic, furniture } = require('../models/product.model')
-const { findAllDraftsForShop, pusblicProductShop, findAllPublishForShop, unPusblicProductShop, searchProduct, findAllProducts, findProduct } = require('../models/repositories/product.repo')
+const { findAllDraftsForShop, pusblicProductShop, findAllPublishForShop, unPusblicProductShop, searchProduct, findAllProducts, findProduct, updateProductById } = require('../models/repositories/product.repo')
+const { removeUndefinedObject, updateNesttedObject } = require('../utils')
 //  define factory class to create product
 
 class ProductFactory {
@@ -27,11 +29,10 @@ class ProductFactory {
     }
 
     // put
-    static async updateProduct(type, playload) {
+    static async updateProduct(type, productId, playload) {
         const productClass = ProductFactory.registryProductKey[type]
         if (!productClass) throw new BadRquestError(`Invalid product type ${type}`)
-
-        return new productClass(playload).createProduct()
+        return new productClass(playload).updateProduct(productId)
     }
 
     // get publish for shop 
@@ -97,6 +98,15 @@ class Product {
             ...this, _id: product_id
         })
     }
+
+    // update Proudct 
+    async updateProduct(productId, playload) {
+        return await updateProductById({
+            productId,
+            playload,
+            model: product
+        })
+    }
 }
 
 // defind sub -class for difference product types colting
@@ -114,6 +124,23 @@ class Clothing extends Product {
 
         return newProduct
     }
+
+    async updateProduct(productId) {
+        // 1 remove attr has null undefind  
+        const objectParam = removeUndefinedObject(this)
+        // 2 check update for colting
+        if (objectParam.product_attribute) {
+            // update child
+            await updateProductById({
+                productId,
+                playload: updateNesttedObject(objectParam.product_attribute),
+                model: clothing
+            })
+        }
+        const updateProduct = await super.updateProduct(productId, updateNesttedObject(objectParam))
+        return updateProduct
+    }
+
 }
 
 class Electronic extends Product {

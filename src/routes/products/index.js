@@ -13,6 +13,8 @@ router.get('/products/:id', asyncHandler(ProductController.findProduct))
 
 //authentication 
 router.use(authenticationV2)
+
+router.patch('/products/:id', asyncHandler(ProductController.updateProduct))
 router.post('/products', asyncHandler(ProductController.createProduct))
 router.put('/products/publish/:id', asyncHandler(ProductController.pusblicProductShop))
 router.put('/products/unpublish/:id', asyncHandler(ProductController.unPusblicProductShop))

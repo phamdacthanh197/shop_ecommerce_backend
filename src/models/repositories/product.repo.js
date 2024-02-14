@@ -85,6 +85,15 @@ const queryProduct = async ({ query, limit, skip }) => {
         .exec()
 }
 
+const updateProductById = async ({
+    productId,
+    playload,
+    model,
+    isNew = true
+}) => {
+    return await model.findByIdAndUpdate(productId, playload, { new: isNew })
+}
+
 module.exports = {
     findAllDraftsForShop,
     pusblicProductShop,
@@ -92,5 +101,6 @@ module.exports = {
     unPusblicProductShop,
     findAllProducts,
     findProduct,
+    updateProductById,
     searchProduct
 }

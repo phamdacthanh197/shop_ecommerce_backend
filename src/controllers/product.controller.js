@@ -25,6 +25,18 @@ class ProductController {
             })
         }).send(res)
     }
+
+    // update product by id 
+    updateProduct = async (req, res, next) => {
+        new SuccessResponse({
+            message: "updateProduct product succes",
+            metaData: await ProductServiceV2.updateProduct(req.body.product_type, req.params.id, {
+                ...req.body,
+                product_shop: req.user.userId
+            })
+        }).send(res)
+    }
+
     // create product by id
     pusblicProductShop = async (req, res, next) => {
         new SuccessResponse({
@@ -102,6 +114,7 @@ class ProductController {
             })
         }).send(res)
     }
+
 }
 
 module.exports = new ProductController()
