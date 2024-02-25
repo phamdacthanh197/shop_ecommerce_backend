@@ -5,6 +5,7 @@ const { BadRquestError } = require('../core/error.response')
 const { product, clothing, electronic, furniture } = require('../models/product.model')
 const { findAllDraftsForShop, pusblicProductShop, findAllPublishForShop, unPusblicProductShop, searchProduct, findAllProducts, findProduct, updateProductById } = require('../models/repositories/product.repo')
 const { removeUndefinedObject, updateNesttedObject } = require('../utils')
+const { insertInventory } = require('../models/repositories/inventory.repo')
 //  define factory class to create product
 
 class ProductFactory {
@@ -94,9 +95,20 @@ class Product {
     }
 
     async createProduct(product_id) {
-        return await product.create({
+        const newProduct = await product.create({
             ...this, _id: product_id
         })
+        if (newProduct) {
+            // add product stock in inventory colection
+            await insertInventory(
+                {
+                    productId: newProduct._id,
+                    shopId: this.product_shop,
+                    stock: this.product_quantity
+                }
+            )
+        }
+        return newProduct
     }
 
     // update Proudct 
