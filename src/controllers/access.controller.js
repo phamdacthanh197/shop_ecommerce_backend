@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const AccessService = require("../services/access,service")
 const { CREATED, SuccessResponse } = require('../core/success.response')

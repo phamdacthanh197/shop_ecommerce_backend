@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const express = require("express")
 const AccessController = require("../../controllers/access.controller")

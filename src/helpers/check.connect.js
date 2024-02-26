@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const { default: mongoose } = require("mongoose")
 const _SECOND = 5000

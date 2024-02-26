@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const { CREATED, SuccessResponse } = require('../core/success.response')
 const ProductService = require('../services/product.service')

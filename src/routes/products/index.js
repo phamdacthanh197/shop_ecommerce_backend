@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const express = require("express")
 const  ProductController = require("../../controllers/product.controller")

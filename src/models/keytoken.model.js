@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const { Schema, model } = require('mongoose'); // Erase if already required
 

@@ -1,4 +1,4 @@
-"use_strict"
+"use strict"
 
 const expres = require("express")
 const { apiKey, permisson } = require("../auth/checkAuth")
