@@ -1,7 +1,7 @@
 'use strict'
 const { Types } = require("mongoose")
 const { product, clothing, electronic, furniture } = require("../product.model")
-const { getSelectData, getUnSelectData } = require("../../utils")
+const { getSelectData, getUnSelectData, convertToObjectIdMongo } = require("../../utils")
 
 const findAllDraftsForShop = async ({ query, limit, skip }) => {
     return await queryProduct({ query, limit, skip })
@@ -94,6 +94,10 @@ const updateProductById = async ({
     return await model.findByIdAndUpdate(productId, playload, { new: isNew })
 }
 
+const getProudctById = async (productId) => {
+    return await product.findById({ _id: convertToObjectIdMongo(productId) }).lean()
+}
+
 module.exports = {
     findAllDraftsForShop,
     pusblicProductShop,
@@ -101,6 +105,7 @@ module.exports = {
     unPusblicProductShop,
     findAllProducts,
     findProduct,
+    getProudctById,
     updateProductById,
     searchProduct
 }

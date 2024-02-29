@@ -10,6 +10,7 @@ const findAllDisCountCodeUnSelect = async ({
     unSelect,
     model
 }) => {
+    console.log(filter, "filter")
     const skip = (page - 1) * page
     const sortBy = sort === "ctime" ? { _id: -1 } : { _id: 1 }
     const documents = await model.find(filter)
@@ -40,7 +41,25 @@ const findAllDisCountCodeSelect = async ({
     return documents
 }
 
+const updateDiscountByid = async ({
+    discountId,
+    playload,
+    model,
+    isNew = true
+}) => {
+    return await model.findByIdAndUpdate(discountId, playload, { new: isNew })
+}
+
+const checkDiscountExits = async ({
+    model, filter
+}) => {
+    return await model.findOne(filter).lean()
+}
+
+
 module.exports = {
     findAllDisCountCodeUnSelect,
-    findAllDisCountCodeSelect
+    updateDiscountByid,
+    findAllDisCountCodeSelect,
+    checkDiscountExits
 }
