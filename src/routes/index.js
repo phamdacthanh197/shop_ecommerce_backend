@@ -8,9 +8,10 @@ const router = expres.Router()
 router.use(apiKey)
 // check permisson
 router.use(permisson("0000"))
-
-router.use("/v1/api", require("./products")) 
+router.use("/v1/api", require("./checkout")) 
+router.use("/v1/api", require("./inventory"))
 router.use("/v1/api", require("./cart")) 
+router.use("/v1/api", require("./products")) 
 router.use("/v1/api", require("./discounts")) 
 router.use("/v1/api", require("./access"))
 

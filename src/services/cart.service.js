@@ -96,7 +96,7 @@ class CartService {
         })
     }
 
-    static async deleteUserCart({ userId, productId }) {
+    static async deleteItemInCart({ userId, productId }) {
         const query = {
             cart_userId: userId,
             cart_state: "active"
@@ -107,6 +107,10 @@ class CartService {
             }
         })
         return deleteCart
+    }
+
+    static async deleteCart ({ userId }) {
+        return await cart.deleteOne({ cart_userId: userId })
     }
 
     static async getListUserCart({ userId }) {

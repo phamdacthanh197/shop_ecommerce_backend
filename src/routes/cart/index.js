@@ -11,7 +11,8 @@ const CartController = require("../../controllers/cart.controller")
 //authentication 
 router.get('/cart', asyncHandler(CartController.listCart))
 router.post('/cart', asyncHandler(CartController.addToCart))
-router.delete('/cart', asyncHandler(CartController.delete))
+router.delete('/cart', asyncHandler(CartController.deleteItemInCart))
+router.delete('/cart/user/:userId', asyncHandler(CartController.deleteCart))
 router.post('/cart/update', asyncHandler(CartController.updateProductIncart)) 
 
 

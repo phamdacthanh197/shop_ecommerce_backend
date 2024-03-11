@@ -12,7 +12,7 @@ router.get('/discounts/amount', asyncHandler(DiscountController.getDiscountAmoun
 
 router.use(authenticationV2)
 //authentication 
-router.get('/discounts', asyncHandler(DiscountController.deleteDiscountCode))
+router.delete('/discounts', asyncHandler(DiscountController.deleteDiscountCode))
 router.post('/discounts', asyncHandler(DiscountController.createDiscountCode))
 router.patch('/discounts/:id', asyncHandler(DiscountController.updateDiscountCode))
 

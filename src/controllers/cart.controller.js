@@ -34,10 +34,10 @@ class CartController {
         }).send(res)
     }
 
-    delete = async (req, res, next) => {
+    deleteItemInCart = async (req, res, next) => {
         new SuccessResponse({
             message: "delete cart success",
-            metaData: await CartService.deleteUserCart({
+            metaData: await CartService.deleteItemInCart({
                 ...req.body,
             })
         }).send(res)
@@ -52,6 +52,25 @@ class CartController {
         }).send(res)
     }
 
+    addProductToCart = async (req, res, next) => {
+        new SuccessResponse({
+            message: "addProductToCart success",
+            metaData: await CartService.addProductToCart(
+                ...req.body,
+            )
+        }).send(res)
+    }
+
+    deleteCart = async (req, res, next) => {
+        new SuccessResponse({
+            message: "deleteCart success",
+            metaData: await CartService.deleteCart(
+             {
+                 ...req.body,
+             }
+            )
+        }).send(res)
+    }
 
 }
 
